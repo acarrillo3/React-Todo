@@ -47,6 +47,18 @@ export default class TodoList extends React.Component {
                     return todo;
                 }
             })
+        });
+    };
+
+    updateTodoToShow = s => {
+        this.setState({
+            todoToShow: s
+        });
+    };
+
+    handleDeleteTodo = (id) => {
+        this.setState({
+            todos: this.state.todos.filter(todo => todo.id !== id) //function to delete the todos
         })
     }
 
@@ -55,7 +67,7 @@ export default class TodoList extends React.Component {
 
         if (this.state.todoToShow === "all") {
             todos = this.state.todos;
-        } else if (this.state/todoToShow === "active") {
+        } else if (this.state.todoToShow === "active") {
             todos = this.state.todos.filter(todo => !todo.complete);
         } else if (this.state.todoToShow === "complete") {
             todos = this.state.todos.filter(todo => todo.complete);
@@ -71,6 +83,7 @@ export default class TodoList extends React.Component {
                     key={todo.id}
                     toggleComplete={() => this.toggleComplete(todo.id)} // we now have a prop that we are passing which is function, so whenever the div is click is going to call that prop and that is a Lambda function so that can acces a parameter which is in the map. after this we can create this function
                    // text={todo.text} /> instead of the above line we are now rendering the todo component passing text as a prop
+                    onDelete={() => this.handleDeleteTodo(todo.id)}
                     todo={todo}
                    />
                ))}
