@@ -19,7 +19,8 @@ Help and reference from  https://www.youtube.com/watch?v=I6IY2TqnPDA
 export default class TodoList extends React.Component {
     state = {
         todos: [],
-        todoToShow: "all"
+        todoToShow: "all",
+        toggleAllComplete: true 
     };
 
     addTodo = (todo) => {
@@ -27,14 +28,14 @@ export default class TodoList extends React.Component {
         this.setState({
             todos: newTodos
         }) the bottom is a better way to say the above*/
-        this.setState({
-            todos: [todo, ...this.state.todos]
-        });//after this we pass it as a prop
+        this.setState(state => ({
+            todos: [todo, ...state.todos]
+        }));//after this we pass it as a prop
     };
 
     toggleComplete = (id) => {
-        this.setState({
-            todos: this.state.todos.map(todo => {
+        this.setState(state => ({
+            todos: state.todos.map(todo => {
                 if (todo.id === id) {
                     //suppose to update
                     return{
@@ -47,7 +48,7 @@ export default class TodoList extends React.Component {
                     return todo;
                 }
             })
-        });
+        }));
     };
 
     updateTodoToShow = s => {
@@ -57,15 +58,15 @@ export default class TodoList extends React.Component {
     };
 
     handleDeleteTodo = (id) => {
-        this.setState({
-            todos: this.state.todos.filter(todo => todo.id !== id) //function to delete the todos
-        })
+        this.setState(state => ({
+            todos: state.todos.filter(todo => todo.id !== id) //function to delete the todos
+        }));
     }
 
     removeAllTodosThatAreComplete = () => {
-        this.setState({
-            todos: this.state.todos.filter(todo => !todo.complete) //this  is a similar function to the handleDeleteTodo
-        })
+        this.setState(state => ({
+            todos: state.todos.filter(todo => !todo.complete) //this  is a similar function to the handleDeleteTodo
+        }));
     }
 
     render() {
@@ -108,6 +109,21 @@ export default class TodoList extends React.Component {
                         </button>
                     </div>
                 ) : null}
+                <div>
+                    <button 
+                        onClick={() => 
+                            this.setState((state) => ({
+                                todos: state.todos.map( todo => ({
+                                    ...todo,
+                                    complete: state.toggleAllComplete
+                                })),
+                                toggleAllComplete: !state.toggleAllComplete
+                            }))
+                        }
+                    >
+                        toggle all complete: {`${this.state.toggleAllComplete}`} 
+                    </button>
+                </div>
             </div>
         );
     }
