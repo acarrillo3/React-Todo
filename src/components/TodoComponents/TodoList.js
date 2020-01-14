@@ -2,6 +2,7 @@
 // feel free to change this component.js into TodoList.js
 import React from 'react';
 import TodoForm from './TodoForm';
+import Todo from './Todo';
 /*
 Help and reference from  https://www.youtube.com/watch?v=I6IY2TqnPDA
 1. add todo
@@ -30,13 +31,37 @@ export default class TodoList extends React.Component {
         });//after this we pass it as a prop
     };
 
+    toggleComplete = (id) => {
+        this.setState({
+            todos: this.state.todos.map(todo => {
+                if (todo.id === id) {
+                    //suppose to update
+                    return{
+                        // id: todo.id,
+                        // text: todo.text, instead of this we will use the ....todo since the first two will stay the same
+                        ...todo,
+                        complete: !todo.complete //we are inversing here that means that this will turn true 
+                    };
+                } else {
+                    return todo;
+                }
+            })
+        })
+    } 
+
     render() {
         return (
             <div>
                 <TodoForm onSubmit={this.addTodo} /> {/* here it says when we submit our form a todo will be added */}
                {/* {JSON.stringify(this.state.todos)} what this is doing is turning the array into a string, that way we can see the value of our state, however this does not delete what we type on the input so i created a this.setState where the text is set to and empty string  */}
                {this.state.todos.map(todo => (
-                   <div key={todo.id}> {todo.text}</div> //here we are using the maps function and what is saying is that for each todo a div is created which renders the text and we are giving it a key which is the todo id
+                  // <div key={todo.id}> {todo.text}</div> here we are using the maps function and what is saying is that for each todo a div is created which renders the text and we are giving it a key which is the todo id
+                  <Todo 
+                    key={todo.id} 
+                    toggleComplete={() => this.toggleComplete(todo.id)} // we now have a prop that we are passing which is function, so whenever the div is click is going to call that prop and that is a Lambda function so that can acces a parameter which is in the map. after this we can create this function
+                   // text={todo.text} /> instead of the above line we are now rendering the todo component passing text as a prop
+                    todo={todo}
+                   />
                ))}
             </div>
         );

@@ -51,5 +51,7 @@ then called props and created the onSubmit function inside the handleSubmit func
 installed shortid to generate ids, imported, and used id: shortid.generate()
 then we will json fied to turn the state into a string, so that the new todo can appear on the screen
 created and empty string of text so that the form reset and a button to submit.
-completed step 1 now ill be changing the json stringify to using the .maps method  
+completed step 1  now ill be changing the json stringify to using the .maps method  so that the text we submited can be kept on the screen and that completes step 2
+
+
 */ 
