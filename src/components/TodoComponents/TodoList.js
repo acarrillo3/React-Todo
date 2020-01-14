@@ -1,2 +1,44 @@
 // your components will all go in this `component` directory.
 // feel free to change this component.js into TodoList.js
+import React from 'react';
+import TodoForm from './TodoForm';
+/*
+Help and reference from  https://www.youtube.com/watch?v=I6IY2TqnPDA
+1. add todo
+2. display todos
+3. cross off todo
+4. show number of active todos
+5. filter all/active/complete
+6. delete todo
+7. delete all complete
+  7.1 only show if at least one is complete
+8. button toggle all on/off
+*/
+
+export default class TodoList extends React.Component {
+    state = {
+        todos: []
+    };
+
+    addTodo = (todo) => {
+        /*const newTodos = [todo, ...this.state.todos]; -->what we are doing here is creating a copy of the todos array and passing it to the newTodos and if i place the todo infront of the ... that means its going to the very begginning
+        this.setState({
+            todos: newTodos
+        }) the bottom is a better way to say the above*/
+        this.setState({
+            todos: [todo, ...this.state.todos]
+        });//after this we pass it as a prop
+    };
+
+    render() {
+        return (
+            <div>
+                <TodoForm onSubmit={this.addTodo} /> {/* here it says when we submit our form a todo will be added */}
+               {/* {JSON.stringify(this.state.todos)} what this is doing is turning the array into a string, that way we can see the value of our state, however this does not delete what we type on the input so i created a this.setState where the text is set to and empty string  */}
+               {this.state.todos.map(todo => (
+                   <div key={todo.id}> {todo.text}</div> //here we are using the maps function and what is saying is that for each todo a div is created which renders the text and we are giving it a key which is the todo id
+               ))}
+            </div>
+        );
+    }
+}
