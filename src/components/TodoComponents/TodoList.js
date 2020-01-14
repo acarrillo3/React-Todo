@@ -62,6 +62,12 @@ export default class TodoList extends React.Component {
         })
     }
 
+    removeAllTodosThatAreComplete = () => {
+        this.setState({
+            todos: this.state.todos.filter(todo => !todo.complete) //this  is a similar function to the handleDeleteTodo
+        })
+    }
+
     render() {
         let todos = [];//step 5 bellow
 
@@ -95,7 +101,15 @@ export default class TodoList extends React.Component {
                     <button onClick={() => this.updateTodoToShow("active")}>active</button>
                     <button onClick={() => this.updateTodoToShow("complete")}>complete</button> {/*part of step so that we can filter thru the todos array */}
                 </div>
+                {this.state.todos.some(todo => todo.complete) ? (
+                    <div>
+                        <button onClick={this.removeAllTodosThatAreComplete}>
+                            remove all completed todos
+                        </button>
+                    </div>
+                ) : null}
             </div>
         );
     }
 }
+/*on the last button we made it into a conditional so that it only appears when theres completed items */
