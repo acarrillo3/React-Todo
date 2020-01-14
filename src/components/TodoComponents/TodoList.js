@@ -18,7 +18,8 @@ Help and reference from  https://www.youtube.com/watch?v=I6IY2TqnPDA
 
 export default class TodoList extends React.Component {
     state = {
-        todos: []
+        todos: [],
+        todoToShow: "all"
     };
 
     addTodo = (todo) => {
@@ -40,29 +41,47 @@ export default class TodoList extends React.Component {
                         // id: todo.id,
                         // text: todo.text, instead of this we will use the ....todo since the first two will stay the same
                         ...todo,
-                        complete: !todo.complete //we are inversing here that means that this will turn true 
+                        complete: !todo.complete //we are inversing here that means that this will turn true
                     };
                 } else {
                     return todo;
                 }
             })
         })
-    } 
+    }
 
     render() {
+        let todos = [];//step 5 bellow
+
+        if (this.state.todoToShow === "all") {
+            todos = this.state.todos;
+        } else if (this.state/todoToShow === "active") {
+            todos = this.state.todos.filter(todo => !todo.complete);
+        } else if (this.state.todoToShow === "complete") {
+            todos = this.state.todos.filter(todo => todo.complete);
+        }
+
         return (
             <div>
                 <TodoForm onSubmit={this.addTodo} /> {/* here it says when we submit our form a todo will be added */}
                {/* {JSON.stringify(this.state.todos)} what this is doing is turning the array into a string, that way we can see the value of our state, however this does not delete what we type on the input so i created a this.setState where the text is set to and empty string  */}
-               {this.state.todos.map(todo => (
+               {todos.map(todo => (
                   // <div key={todo.id}> {todo.text}</div> here we are using the maps function and what is saying is that for each todo a div is created which renders the text and we are giving it a key which is the todo id
-                  <Todo 
-                    key={todo.id} 
+                  <Todo
+                    key={todo.id}
                     toggleComplete={() => this.toggleComplete(todo.id)} // we now have a prop that we are passing which is function, so whenever the div is click is going to call that prop and that is a Lambda function so that can acces a parameter which is in the map. after this we can create this function
                    // text={todo.text} /> instead of the above line we are now rendering the todo component passing text as a prop
                     todo={todo}
                    />
                ))}
+                <div>
+                    Todos left: {this.state.todos.filter(todo => !todo.complete).length}
+                </div> {/*#4. this filter goes one by one and if it matches this condition it keeps them */}
+                <div>
+                    <button onClick={() => this.updateTodoToShow("all")}>all</button>
+                    <button onClick={() => this.updateTodoToShow("active")}>active</button>
+                    <button onClick={() => this.updateTodoToShow("complete")}>complete</button> {/*part of step so that we can filter thru the todos array */}
+                </div>
             </div>
         );
     }
